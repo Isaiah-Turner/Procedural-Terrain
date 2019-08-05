@@ -10,7 +10,7 @@ public class TerrainGenerator : MonoBehaviour
 	public Vector2[] uvs;
 	public float[] heightMap;
 
-	public int heightMultiplier = 10;
+	public const int heightMultiplier = 100;
 	public int erosionIterations = 10;
 	public AnimationCurve heightCurve;
 	public bool animatedErosion = false;
@@ -32,8 +32,8 @@ public class TerrainGenerator : MonoBehaviour
 		}
 	}*/
 	void Start() {
-		BuildErodedHeightMap(new Vector2(0,0), 0);
-		GameObject terrain = generateTerrain();
+		//BuildErodedHeightMap(new Vector2(0,0), 0);
+		//GameObject terrain = generateTerrain();
 		/*heightMap = FindObjectOfType<NoiseCreator>().GenerateHeightMap(chunkSize, continentGeneration);
 		if(!animatedErosion) {
 			for(int dropAmount = 0; dropAmount < erosionIterations; dropAmount++) {
@@ -69,13 +69,13 @@ public class TerrainGenerator : MonoBehaviour
 		}	
 	}
 	public void BuildErodedHeightMap(Vector2 center, int erosionIterations) {
+
 		heightMap = FindObjectOfType<NoiseCreator>().GenerateHeightMap(chunkSize, continentGeneration, center);
 		for(int dropAmount = 0; dropAmount < erosionIterations; dropAmount++) {
 				heightMap = FindObjectOfType<Eroder>().erode(heightMap, chunkSize);		
 		}	
 	}
 	public GameObject generateTerrain() {
-		
 		int simplificationIncrement = (levelOfDetail == 0) ? 1: levelOfDetail *2;
 		int verticesPerLine = (chunkSize-1)/simplificationIncrement + 1;
 		//Debug.Log(simplificationIncrement);
@@ -84,11 +84,11 @@ public class TerrainGenerator : MonoBehaviour
 		triangles = new int[(verticesPerLine-1)*(verticesPerLine-1)*6];
 		uvs = new Vector2[verticesPerLine*verticesPerLine];
 		int vertexIndex = 0;
-
 		for(int y = 0; y < chunkSize; y+=simplificationIncrement)  {
 			for(int x = 0; x < chunkSize; x+=simplificationIncrement) {
 				//Debug.Log(x +" " + y);
 				float terrainHeight = heightMultiplier * heightMap[y*chunkSize + x];
+				//Debug.Log(terrainHeight);
 				float xPercent = (float)x / (chunkSize);
 				float yPercent = (float)y / (chunkSize);
 
@@ -112,6 +112,7 @@ public class TerrainGenerator : MonoBehaviour
 		toReturn.AddComponent<MeshCollider>();
 		mesh = new Mesh();
 		toReturn.GetComponent<MeshFilter>().mesh = mesh;	
+		//mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
 		float waterLevel =  0.3f*(float)heightMultiplier; //.3 good for continents; .4 good otherwise
 		float snowLevel =  0.9f*(float)heightMultiplier;
 		float sandLevel =  waterLevel/0.8f;
@@ -127,7 +128,7 @@ public class TerrainGenerator : MonoBehaviour
 		rend.material.SetTexture("_GrassTex", Resources.Load("groundGrass") as Texture);
 		rend.material.SetTextureScale("_GrassTex", new Vector2(50, 50));
 
-		rend.material.SetTexture("_StoneTex", Resources.Load("stone") as Texture);
+		rend.material.SetTexture("_StoneTex", Resources.Load("GroundStone") as Texture);
 		rend.material.SetTextureScale("_StoneTex", new Vector2(50, 50));
 
 		rend.material.SetTexture("_WaterTex", Resources.Load("water") as Texture);

@@ -52,9 +52,9 @@ public class NoiseCreator : MonoBehaviour
                 float scale = initialScale;
                 float noiseValue = 0F;
                 float weight = 1;
-                for(int i =0; i < octaves; i++) {
-                    float xCoord = (xSeed + (float)x / (float)size) * scale;
-                    float yCoord = (ySeed + (float)y / (float)size) * scale;
+                for(int i = 0; i < octaves; i++) {
+                    float xCoord = ((xSeed + (float)x) / (float)size) * scale;
+                    float yCoord = ((ySeed + (float)y) / (float)size) * scale;
                     noiseValue += Perlin3D(xCoord, yCoord, warpStrength * Mathf.PerlinNoise(xCoord*warpSize, yCoord*warpSize)) * weight;
                     //Debug.Log("NOISE VAL: " + noiseValue);
                     weight *= persistence;
@@ -95,7 +95,39 @@ public class NoiseCreator : MonoBehaviour
             }
             normalize(heightMap, min, max);
         }
-        return heightMap;
+        heightMap = smoothMap(heightMap);
+        return smoothMap(heightMap);
+    }
+    public float[] smoothMap(float[] toSmooth) {
+        float maxH = -100f;
+        float minH = 100f;
+        int width = (int)Mathf.Sqrt(toSmooth.Length);
+        float[] toRet = new float[width*width];
+        for(int i = 0; i < toSmooth.Length; i++) {
+            float sum = toSmooth[i];
+            float valuesUsed = 1.0f;
+            if(i - 1 >= 0 && (i % width == (i - 1) % width)) {
+                sum += toSmooth[i - 1];
+                valuesUsed += 1;
+            }
+            if(i + 1 < toSmooth.Length && (i % width == (i + 1) % width)) {
+                sum += toSmooth[i + 1];
+                valuesUsed += 1;
+            }
+            if(i - width >= 0) {
+                sum += toSmooth[i - width];
+                valuesUsed += 1;
+            }
+            if(i + width < toSmooth.Length) {
+                sum += toSmooth[i + width];
+                valuesUsed += 1;
+            }
+            toRet[i] = sum/valuesUsed;
+            maxH = Mathf.Max(toRet[i], maxH);
+            minH = Mathf.Min(toRet[i], minH);
+        }
+        normalize(toRet, minH, maxH);
+        return toRet;
     }
     void normalize(float[] toNorm, float min, float max) {
         //Debug.Log(max);
