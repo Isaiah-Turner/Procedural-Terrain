@@ -98,6 +98,36 @@ public class NoiseCreator : MonoBehaviour
         heightMap = smoothMap(heightMap);
         return smoothMap(heightMap);
     }
+    public static List<int> getGridNeighbors(int startingIndex, int gridWidth) { //% gives col, / gives row
+        //% gives col, / gives row
+        List<int> neighbors = new List<int>();
+        int arrayLength = gridWidth * gridWidth;
+        if(startingIndex - 1 >= 0 && (startingIndex / gridWidth == (startingIndex - 1) / gridWidth)) { //left
+            neighbors.Add(startingIndex - 1);
+        }
+        if(startingIndex + 1 < arrayLength && (startingIndex / gridWidth == (startingIndex + 1) / gridWidth)) { //right
+            neighbors.Add(startingIndex + 1);
+        }
+        if(startingIndex - gridWidth >= 0) { //up
+            neighbors.Add(startingIndex - gridWidth);
+        }
+        if(startingIndex + gridWidth < arrayLength) { //down
+            neighbors.Add(startingIndex + gridWidth);
+        }
+        if(startingIndex - gridWidth + 1 >= 0 && (startingIndex % gridWidth - (startingIndex - gridWidth + 1) % gridWidth == -1)) { //top right
+            neighbors.Add(startingIndex - gridWidth + 1);
+        }
+        if(startingIndex - gridWidth - 1 >= 0 && (startingIndex % gridWidth - (startingIndex - gridWidth - 1) % gridWidth == 1)) { //top left
+            neighbors.Add(startingIndex - gridWidth - 1);
+        }
+        if(startingIndex + gridWidth  + 1 < arrayLength && (startingIndex % gridWidth - (startingIndex + gridWidth + 1) % gridWidth == -1)) { //bottom right
+            neighbors.Add(startingIndex + gridWidth + 1);
+        }
+        if(startingIndex + gridWidth - 1 < arrayLength && (startingIndex % gridWidth - (startingIndex + gridWidth - 1) % gridWidth == 1)) { //bottom left
+            neighbors.Add(startingIndex + gridWidth - 1);
+        }
+        return neighbors;
+    }
     public float[] smoothMap(float[] toSmooth) {
         float maxH = -100f;
         float minH = 100f;
@@ -106,22 +136,9 @@ public class NoiseCreator : MonoBehaviour
         for(int i = 0; i < toSmooth.Length; i++) {
             float sum = toSmooth[i];
             float valuesUsed = 1.0f;
-            if(i - 1 >= 0 && (i % width == (i - 1) % width)) {
-                sum += toSmooth[i - 1];
-                valuesUsed += 1;
-            }
-            if(i + 1 < toSmooth.Length && (i % width == (i + 1) % width)) {
-                sum += toSmooth[i + 1];
-                valuesUsed += 1;
-            }
-            if(i - width >= 0) {
-                sum += toSmooth[i - width];
-                valuesUsed += 1;
-            }
-            if(i + width < toSmooth.Length) {
-                sum += toSmooth[i + width];
-                valuesUsed += 1;
-            }
+            List<int> neighbors = getGridNeighbors(i, width);
+            valuesUsed += neighbors.Count();
+            sum += neigbors.Sum();
             toRet[i] = sum/valuesUsed;
             maxH = Mathf.Max(toRet[i], maxH);
             minH = Mathf.Min(toRet[i], minH);
