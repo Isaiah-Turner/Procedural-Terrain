@@ -137,8 +137,10 @@ public class NoiseCreator : MonoBehaviour
             float sum = toSmooth[i];
             float valuesUsed = 1.0f;
             List<int> neighbors = getGridNeighbors(i, width);
-            valuesUsed += neighbors.Count();
-            sum += neigbors.Sum();
+            valuesUsed += neighbors.Count;
+            foreach(int index in neighbors) {
+                sum += toSmooth[index];
+            }
             toRet[i] = sum/valuesUsed;
             maxH = Mathf.Max(toRet[i], maxH);
             minH = Mathf.Min(toRet[i], minH);

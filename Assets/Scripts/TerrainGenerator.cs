@@ -10,7 +10,7 @@ public class TerrainGenerator : MonoBehaviour
 	public Vector2[] uvs;
 	public float[] heightMap;
 
-	public const int heightMultiplier = 100;
+	public static int heightMultiplier = 100;
 	public int erosionIterations = 10;
 	public AnimationCurve heightCurve;
 	public bool animatedErosion = false;
@@ -25,40 +25,7 @@ public class TerrainGenerator : MonoBehaviour
 	private int iterationsPerFrame = 100;
 	private float updateTime = 1;
 	private int triangleIndex = 0;
-	/*private void OnDrawGizmos () {
-		Gizmos.color = Color.black;
-		for (int i = 0; i < vertices.Length; i++) {
-			Gizmos.DrawSphere(vertices[i], 0.1f);
-		}
-	}*/
-	void Start() {
-		//BuildErodedHeightMap(new Vector2(0,0), 0);
-		//GameObject terrain = generateTerrain();
-		/*heightMap = FindObjectOfType<NoiseCreator>().GenerateHeightMap(chunkSize, continentGeneration);
-		if(!animatedErosion) {
-			for(int dropAmount = 0; dropAmount < erosionIterations; dropAmount++) {
-				heightMap = FindObjectOfType<Eroder>().erode(heightMap, chunkSize);		
-			}
-			generateTerrain(heightMap);
-		}
-		//StartCoroutine(erodeTimed(erosionIterations));
-		//generateTerrain(heightMap);*/
-	}
-	void Update() {
-		/*if (totalIterations < erosionIterations && animatedErosion) {
-			for(int dropAmount = 0; dropAmount < iterationsPerFrame; dropAmount++) {
-				heightMap = FindObjectOfType<Eroder>().erode(heightMap, chunkSize);		
-			}	
-			totalIterations += iterationsPerFrame;
-			generateTerrain(heightMap);
-			Debug.Log(totalIterations);
-		}
-		else if(Time.time >= updateTime){
-			//heightMap = FindObjectOfType<NoiseCreator>().GenerateHeightMap(chunkSize, continentGeneration);
-			//generateTerrain(heightMap);
-			updateTime = Time.time + 3;
-		}*/
-	} 
+
 	public IEnumerator erodeTimed(int iterations) {
 		WaitForSeconds wait = new WaitForSeconds(0.01f);
 		for(int dropAmount = 0; dropAmount < iterations; dropAmount++) {
@@ -69,11 +36,35 @@ public class TerrainGenerator : MonoBehaviour
 		}	
 	}
 	public void BuildErodedHeightMap(Vector2 center, int erosionIterations) {
-
 		heightMap = FindObjectOfType<NoiseCreator>().GenerateHeightMap(chunkSize, continentGeneration, center);
 		for(int dropAmount = 0; dropAmount < erosionIterations; dropAmount++) {
 				heightMap = FindObjectOfType<Eroder>().erode(heightMap, chunkSize);		
 		}	
+	}
+	public void setHeightMapFromReference(float[] referenceHeightMap, int startX, int startY) { //used when a larger heightmap has been generated already
+		int myHeightMapIndex = 0;
+		heightMap = new float[chunkSize*chunkSize];
+		int width = (int)Mathf.Sqrt(referenceHeightMap.Length); 
+		for(int y = startY; y < chunkSize+startY; y++)  {
+			for(int x = startX; x < chunkSize+startX; x++) {
+				int index = y*width + x;
+				bool xUsed = false;
+				if(x == chunkSize+startX-1 && x + 1 < width) { //x is at the max value => use the value one to the right if possible to remove seam between tiles
+					index = y*width + x + 1;
+					xUsed = true;
+				}
+				 if(y == chunkSize+startY-1 && (y+1)*width + x < referenceHeightMap.Length) { //y is at the max value => use the value one below if possible to remove seam between tiles
+					index = (y+1)*width + x;
+					if(xUsed && (y+1)*width + x+1 < referenceHeightMap.Length) {
+						index = (y+1)*width + x+1;
+					}
+				}
+				//Debug.Log(x + " " + y);
+				//Debug.Log(index + " is filling: " + myHeightMapIndex);
+				heightMap[myHeightMapIndex] = referenceHeightMap[index];
+				myHeightMapIndex++;
+			}
+		}
 	}
 	public GameObject generateTerrain() {
 		int simplificationIncrement = (levelOfDetail == 0) ? 1: levelOfDetail *2;
@@ -104,7 +95,23 @@ public class TerrainGenerator : MonoBehaviour
 		triangleIndex = 0;
 		return generateMesh();
 	}
+	public void scatterObject(float abundance, GameObject objectToScatter) {
+		if(mesh != null)  {
+			Vector3[] normals = mesh.normals;
+			for(int i =0; i < vertices.Length; i++) {
+				if(abundance >= Random.Range(0.0f, 1.0f)) {
+					float slope = 1 - normals[i].y;
+					if(slope < 0.3) {
+						var clone = Instantiate(objectToScatter, vertices[i], Quaternion.identity);
+				    	float scale = Random.Range(1, 5);
+    					clone.transform.localScale = Vector3.one*scale;
+					}
+				}
 
+		}
+		}
+
+	}
 	public GameObject generateMesh() {
 		GameObject toReturn = new GameObject();
 		toReturn.AddComponent<MeshRenderer>();
@@ -112,7 +119,7 @@ public class TerrainGenerator : MonoBehaviour
 		toReturn.AddComponent<MeshCollider>();
 		mesh = new Mesh();
 		toReturn.GetComponent<MeshFilter>().mesh = mesh;	
-		//mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
+		mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
 		float waterLevel =  0.3f*(float)heightMultiplier; //.3 good for continents; .4 good otherwise
 		float snowLevel =  0.9f*(float)heightMultiplier;
 		float sandLevel =  waterLevel/0.8f;
