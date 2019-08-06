@@ -7,7 +7,7 @@ public class TileTerrain : MonoBehaviour
 	public int tileDepth, tileWidth;
 	private int chunkSize;
 	private float[] fullHeightMap;
-	public int erosionIterations = 20000;
+	public int erosionIterations = 0;
 	public GameObject tree;
 	public const int heightMultiplier = 100;
     // Start is called before the first frame update
@@ -22,10 +22,10 @@ public class TileTerrain : MonoBehaviour
 		}	
 
 		int currentY = 0;
-    	for(int tileY = (int)Mathf.Floor(-tileDepth/2); tileY < Mathf.RoundToInt((float)tileDepth/2.0f); tileY++) 
+    	for(int tileY = (int)Mathf.Floor(-tileDepth/2.0f); tileY < Mathf.RoundToInt((float)tileDepth/2.0f); tileY++) 
     	{
     		int currentX = 0;
-    		for(int tileX = (int)Mathf.Floor(-tileWidth/2); tileX < Mathf.RoundToInt((float)tileWidth/2.0f); tileX++) {
+    		for(int tileX = (int)Mathf.Floor(-tileWidth/2.0f); tileX < Mathf.RoundToInt((float)tileWidth/2.0f); tileX++) {
     			Debug.Log(tileX + " " + tileY);
     			Vector2 tilePos = new Vector2(tileX*(chunkSize-1), tileY*(chunkSize-1));
     			Debug.Log(tilePos);
@@ -34,11 +34,13 @@ public class TileTerrain : MonoBehaviour
 				//generator.BuildErodedHeightMap(tilePos, 0);
 				Debug.Log(chunkSize*currentX + " " + chunkSize*currentY);
 				generator.setHeightMapFromReference(fullHeightMap, chunkSize*currentX, chunkSize*currentY);
+
 				GameObject terrain = generator.generateTerrain();
 				terrain.transform.position = new Vector3(tilePos.x, 0, tilePos.y)*2;
-				terrain.transform.SetParent(this.transform);
+				//terrain.transform.SetParent(this.transform);
+
+				generator.scatterObject(0.01f, tree);
 				currentX += 1;
-				generator.scatterObject(1.0f, tree);
 				Debug.Log("TILE FINISHED");
 				//break;
     		}

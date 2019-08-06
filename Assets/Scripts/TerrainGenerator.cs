@@ -25,7 +25,7 @@ public class TerrainGenerator : MonoBehaviour
 	private int iterationsPerFrame = 100;
 	private float updateTime = 1;
 	private int triangleIndex = 0;
-
+	private GameObject terrainObject;
 	public IEnumerator erodeTimed(int iterations) {
 		WaitForSeconds wait = new WaitForSeconds(0.01f);
 		for(int dropAmount = 0; dropAmount < iterations; dropAmount++) {
@@ -34,6 +34,9 @@ public class TerrainGenerator : MonoBehaviour
 					//generateTerrain(heightMap);
 				yield return wait;
 		}	
+	}
+	void Start() {
+		//var clone = Instantiate(tree, Vector3.one*100, Quaternion.identity);
 	}
 	public void BuildErodedHeightMap(Vector2 center, int erosionIterations) {
 		heightMap = FindObjectOfType<NoiseCreator>().GenerateHeightMap(chunkSize, continentGeneration, center);
@@ -93,22 +96,33 @@ public class TerrainGenerator : MonoBehaviour
 			}
 		}
 		triangleIndex = 0;
-		return generateMesh();
+		terrainObject = generateMesh();
+		return terrainObject;
 	}
 	public void scatterObject(float abundance, GameObject objectToScatter) {
+		//Matrix4x4 localToWorld = transform.localToWorldMatrix;
+		//Instantiate(objectToScatter, vertices[13], Quaternion.identity);
+		int max = 1500;
+		int treeCount = 0;
 		if(mesh != null)  {
 			Vector3[] normals = mesh.normals;
 			for(int i =0; i < vertices.Length; i++) {
+				if(treeCount >= max) 
+					break;
 				if(abundance >= Random.Range(0.0f, 1.0f)) {
 					float slope = 1 - normals[i].y;
-					if(slope < 0.3) {
-						var clone = Instantiate(objectToScatter, vertices[i], Quaternion.identity);
+					if(slope < 0.7 && vertices[i].y > 0.3f*(float)heightMultiplier) {
+						Vector3 worldPos = terrainObject.transform.TransformPoint(mesh.vertices[i]);
+						GameObject clone = Instantiate(objectToScatter, worldPos, Quaternion.identity) as GameObject;
+						Debug.Log("Planting a tree at: " + worldPos + " slope is: " + slope);
 				    	float scale = Random.Range(1, 5);
-    					clone.transform.localScale = Vector3.one*scale;
+    					clone.transform.localScale = Vector3.one*scale*0.3048f;
+    					clone.transform.position = worldPos;
+    					treeCount++;
 					}
 				}
 
-		}
+			}
 		}
 
 	}

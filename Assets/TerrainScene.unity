@@ -886,6 +886,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileDepth: 2
   tileWidth: 2
+  erosionIterations: 0
+  tree: {fileID: 100016, guid: 469edab27ab6d004d84af2c4a851bd7f, type: 3}
 --- !u!1 &1625976929
 GameObject:
   m_ObjectHideFlags: 0
