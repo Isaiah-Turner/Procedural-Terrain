@@ -133,14 +133,13 @@ public class TerrainGenerator : MonoBehaviour
 	}
     public void generateRoad()
     {
-
         int width = (int)Mathf.Sqrt(heightMap.Length);
         Vector2 pointA = new Vector2(Random.Range(0, width), Random.Range(0, width));
         Vector2 pointB;
         do
         {
             pointB = new Vector2(Random.Range(0, width), Random.Range(0, width));
-        } while (AStarPath.manhattanDistanceHeuristic(pointA, pointB) < 150);
+        } while (AStarPath.manhattanDistanceHeuristic(pointA, pointB) < 230);
 
         Debug.Log("Start: " + pointA + "   End: " + pointB);
         List<Vector2> path = AStarPath.findPath(pointA, pointB, width);
@@ -153,6 +152,11 @@ public class TerrainGenerator : MonoBehaviour
         {
             int roadMapIndex = (int)(point.y * width + point.x);
             colors[roadMapIndex] = new Color(0, 0, 0);
+            List<int> neighbors = AStarPath.getGridNeighbors(roadMapIndex, width);
+            foreach(int index in neighbors)
+            {
+                colors[index] = new Color(0, 0, 0);
+            }
             Vector3 worldPos = terrainObject.transform.TransformPoint(mesh.vertices[roadMapIndex]);
             roadPoints.Add(worldPos);
         }
@@ -176,7 +180,70 @@ public class TerrainGenerator : MonoBehaviour
         roadObject.GetComponent<MeshCollider>().sharedMesh = roadMesh;
         roadObject.GetComponent<MeshCollider>().enabled = true;*/
     }
-    public Mesh extrudeAlongPath(List<Vector3> points, List<Vector2> heightMapCoords, float width) // from https://gamedev.stackexchange.com/questions/103047/generating-mesh-along-path
+    public GameObject generateMesh()
+    {
+        GameObject toReturn = new GameObject();
+        toReturn.AddComponent<MeshRenderer>();
+        toReturn.AddComponent<MeshFilter>();
+        toReturn.AddComponent<MeshCollider>();
+        mesh = new Mesh();
+        toReturn.GetComponent<MeshFilter>().mesh = mesh;
+        mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
+        float waterLevel = 0.3f * (float)heightMultiplier; //.3 good for continents; .4 good otherwise
+        float snowLevel = 0.9f * (float)heightMultiplier;
+        float sandLevel = waterLevel / 0.8f;
+        FindObjectOfType<WaterController>().adjustPositionAndSize(chunkSize * 1.414f, waterLevel);
+        MeshRenderer rend = toReturn.GetComponent<MeshRenderer>();
+
+        rend.material.shader = Shader.Find("Custom/TerrainShader");
+        rend.material.SetFloat("_SandHeight", sandLevel); //0.3 for sand and .24 for water makes pools
+        rend.material.SetFloat("_WaterHeight", waterLevel);
+        rend.material.SetFloat("_SnowHeight", snowLevel);
+
+        rend.material.SetTexture("_GrassTex", Resources.Load("groundGrass") as Texture);
+        rend.material.SetTextureScale("_GrassTex", new Vector2(50, 50));
+
+        rend.material.SetTexture("_StoneTex", Resources.Load("GroundStones01") as Texture);
+        rend.material.SetTextureScale("_StoneTex", new Vector2(50, 50));
+
+        rend.material.SetTexture("_WaterTex", Resources.Load("water") as Texture);
+        rend.material.SetTextureScale("_WaterTex", new Vector2(10, 10));
+
+        rend.material.SetTexture("_SandTex", Resources.Load("sand") as Texture);
+        rend.material.SetTextureScale("_SandTex", new Vector2(50, 50));
+
+        rend.material.SetTexture("_SnowTex", Resources.Load("snow") as Texture);
+        rend.material.SetTextureScale("_SnowTex", new Vector2(50, 50));
+
+        rend.material.SetTexture("_RoadTex", Resources.Load("dirtPath") as Texture);
+        rend.material.SetTextureScale("_RoadTex", new Vector2(100, 100));
+
+        rend.material.SetTexture("_RoadBumpmap", Resources.Load("cobblestone_N") as Texture);
+
+        mesh.name = "Terrain Mesh";
+        mesh.vertices = vertices;
+        mesh.triangles = triangles;
+        mesh.uv = uvs;
+        mesh.RecalculateNormals();
+        mesh.RecalculateTangents();
+        toReturn.GetComponent<MeshCollider>().sharedMesh = mesh;
+        toReturn.GetComponent<MeshCollider>().enabled = true;
+        toReturn.name = "Terrain Tile";
+        return toReturn;
+    }
+
+    void addTriangle(int vi, int width)
+    {
+        triangles[triangleIndex] = vi;
+        triangles[triangleIndex + 1] = vi + width;
+        triangles[triangleIndex + 2] = vi + 1;
+
+        triangles[triangleIndex + 3] = vi + 1;
+        triangles[triangleIndex + 4] = vi + width;
+        triangles[triangleIndex + 5] = vi + width + 1;
+        triangleIndex += 6;
+    }
+    /*public Mesh extrudeAlongPath(List<Vector3> points, List<Vector2> heightMapCoords, float width) // from https://gamedev.stackexchange.com/questions/103047/generating-mesh-along-path
     {
         int gridWidth = (int)Mathf.Sqrt(heightMap.Length);
         if (points.Count < 2)
@@ -269,60 +336,6 @@ public class TerrainGenerator : MonoBehaviour
             this.start = start;
             this.roadObject = roadObject;
         }
-    }
-    public GameObject generateMesh() {
-		GameObject toReturn = new GameObject();
-		toReturn.AddComponent<MeshRenderer>();
-		toReturn.AddComponent<MeshFilter>();
-		toReturn.AddComponent<MeshCollider>();
-		mesh = new Mesh();
-		toReturn.GetComponent<MeshFilter>().mesh = mesh;	
-		mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
-		float waterLevel =  0.3f*(float)heightMultiplier; //.3 good for continents; .4 good otherwise
-		float snowLevel =  0.9f*(float)heightMultiplier;
-		float sandLevel =  waterLevel/0.8f;
-		FindObjectOfType<WaterController>().adjustPositionAndSize(chunkSize*1.414f, waterLevel);
-		MeshRenderer rend = toReturn.GetComponent<MeshRenderer>();
+    }*/
 
-		rend.material.shader = Shader.Find("Custom/TerrainShader");
-		rend.material.SetFloat("_SandHeight", sandLevel); //0.3 for sand and .24 for water makes pools
-		rend.material.SetFloat("_WaterHeight", waterLevel);
-		rend.material.SetFloat("_SnowHeight", snowLevel);
-
-        rend.material.SetTexture("_GrassTex", Resources.Load("groundGrass") as Texture);
-		rend.material.SetTextureScale("_GrassTex", new Vector2(50, 50));
-
-		rend.material.SetTexture("_StoneTex", Resources.Load("GroundStone") as Texture);
-		rend.material.SetTextureScale("_StoneTex", new Vector2(50, 50));
-
-		rend.material.SetTexture("_WaterTex", Resources.Load("water") as Texture);
-		rend.material.SetTextureScale("_WaterTex", new Vector2(10, 10));
-
-		rend.material.SetTexture("_SandTex", Resources.Load("sand") as Texture);
-		rend.material.SetTextureScale("_SandTex", new Vector2(50, 50));
-
-		rend.material.SetTexture("_SnowTex", Resources.Load("snow") as Texture);
-		rend.material.SetTextureScale("_SnowTex", new Vector2(50, 50));
-
-		mesh.name = "Terrain Mesh";
-		mesh.vertices = vertices;
-		mesh.triangles = triangles;
-		mesh.uv = uvs;
-		mesh.RecalculateNormals();
-		toReturn.GetComponent<MeshCollider>().sharedMesh = mesh;
-		toReturn.GetComponent<MeshCollider>().enabled = true;
-        toReturn.name = "Terrain Tile";
-		return toReturn;
-	}
-
-	void addTriangle(int vi, int width) {
-			triangles[triangleIndex] = vi;
-			triangles[triangleIndex + 1] = vi + width;
-			triangles[triangleIndex + 2] = vi + 1;
-
-			triangles[triangleIndex + 3] = vi + 1;
-			triangles[triangleIndex + 4] = vi + width;
-			triangles[triangleIndex + 5] = vi + width + 1;
-			triangleIndex += 6;
-	}
 }
