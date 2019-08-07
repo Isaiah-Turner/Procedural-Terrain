@@ -375,7 +375,7 @@ AudioSource:
   m_Volume: 0.454
   m_Pitch: 1
   Loop: 0
-  Mute: 0
+  Mute: 1
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
@@ -888,6 +888,13 @@ MonoBehaviour:
   tileWidth: 2
   erosionIterations: 0
   tree: {fileID: 100016, guid: 469edab27ab6d004d84af2c4a851bd7f, type: 3}
+  tree2: {fileID: 100000, guid: c91c1eb85782d5748ace27eb4d7415bb, type: 3}
+  shrub: {fileID: 100000, guid: 53414ab72ac45614684af7a6985b2c85, type: 3}
+  shrub2: {fileID: 100000, guid: e26c36c102d821c4581a911b1e80588f, type: 3}
+  shrub3: {fileID: 100000, guid: 532066205bc320d4aa4647332e9d2ffa, type: 3}
+  rock: {fileID: 100000, guid: 7ca168569b7f1c5479b28f521d0a1a32, type: 3}
+  rock2: {fileID: 100000, guid: 7aa6cb432038d7c48a82b9395843536a, type: 3}
+  rock3: {fileID: 100000, guid: 94ac0f7807b256d4b866c2b3ec1a6de7, type: 3}
 --- !u!1 &1625976929
 GameObject:
   m_ObjectHideFlags: 0
