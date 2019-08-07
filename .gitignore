@@ -66,6 +66,6 @@ sysinfo.txt
 crashlytics-build.properties
 
 #Ignore mesh folder
-mesh/
+Meshes/
 
 # End of https://www.gitignore.io/api/unity
