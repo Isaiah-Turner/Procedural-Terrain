@@ -22,7 +22,8 @@
     {
         Tags { "RenderType"="Opaque" }
         CGPROGRAM
-        #pragma surface surf Standard fullforwardshadows vertex:vert
+        //#pragma surface surf Standard fullforwardshadows vertex:vert
+		#pragma surface surf Standard fullforwardshadows addshadow
         #pragma target 3.5
 
         struct Input {
@@ -78,7 +79,7 @@
 		 }
         void surf (Input IN, inout SurfaceOutputStandard o) {
 				float currentHeight = IN.worldPos.y;
-				float slope = IN.currentSlope; // slope = 0 when terrain is completely flat
+				float slope = 1 - currentHeight; //IN.currentSlope; // slope = 0 when terrain is completely flat
 				float stoneBlendHeight = _GrassSlopeThreshold * (1-_GrassBlendAmount);
 				float stoneWeight = saturate((slope-stoneBlendHeight)/(_GrassSlopeThreshold-stoneBlendHeight));
 				float3 blended = tex2D (_GrassTex, IN.uv_GrassTex).rgb * (1-stoneWeight) + tex2D (_StoneTex, IN.uv_StoneTex).rgb * stoneWeight; 
@@ -112,6 +113,7 @@
 			else {
 				o.Albedo = blended;
 			}
+             o.Alpha = 1;
 			
         }
         ENDCG

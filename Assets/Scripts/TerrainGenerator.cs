@@ -27,6 +27,7 @@ public class TerrainGenerator : MonoBehaviour
 	private float updateTime = 1;
 	private int triangleIndex = 0;
 	private GameObject terrainObject;
+    private Texture2D roadMask;
 	public IEnumerator erodeTimed(int iterations) {
 		WaitForSeconds wait = new WaitForSeconds(0.01f);
 		for(int dropAmount = 0; dropAmount < iterations; dropAmount++) {
@@ -45,11 +46,15 @@ public class TerrainGenerator : MonoBehaviour
 				heightMap = FindObjectOfType<Eroder>().erode(heightMap, chunkSize);		
 		}	
 	}
-	public void setHeightMapFromReference(float[] referenceHeightMap, float[] referenceObjectMap, int startX, int startY) { //used when a larger heightmap has been generated already
+	public void setHeightMapFromReference(float[] referenceHeightMap, Color[] referenceRoadMask, int startX, int startY) { //used when a larger heightmap has been generated already
 		int myHeightMapIndex = 0;
 		heightMap = new float[chunkSize*chunkSize];
         objectMap = new float[chunkSize * chunkSize];
-		int width = (int)Mathf.Sqrt(referenceHeightMap.Length); 
+        roadMask = new Texture2D(chunkSize, chunkSize);
+        Color[] colors = new Color[chunkSize * chunkSize];
+        for (int x = 0; x < chunkSize * chunkSize; x++)
+            colors[x] = new Color(255, 255, 255);
+        int width = (int)Mathf.Sqrt(referenceHeightMap.Length); 
 		for(int y = startY; y < chunkSize+startY; y++)  {
 			for(int x = startX; x < chunkSize+startX; x++) {
 				int index = y*width + x;
@@ -67,11 +72,13 @@ public class TerrainGenerator : MonoBehaviour
 				//Debug.Log(x + " " + y);
 				//Debug.Log(index + " is filling: " + myHeightMapIndex);
 				heightMap[myHeightMapIndex] = referenceHeightMap[index];
-                objectMap[myHeightMapIndex] = referenceObjectMap[index];
+                colors[myHeightMapIndex] = referenceRoadMask[index];
                 myHeightMapIndex++;
 			}
 		}
-	}
+        roadMask.SetPixels(colors);
+        roadMask.Apply();
+    }
 	public GameObject generateTerrain() {
 		int simplificationIncrement = (levelOfDetail == 0) ? 1: levelOfDetail *2;
 		int verticesPerLine = (chunkSize-1)/simplificationIncrement + 1;
@@ -102,28 +109,43 @@ public class TerrainGenerator : MonoBehaviour
 		terrainObject = generateMesh();
 		return terrainObject;
 	}
-    public void scatterObject(float abundance, GameObject objectToScatter, Vector2 allowableScale) {
+    public void scatterGrass(GameObject grass, float minDist, int k) 
+    {
+        PoissonDiskGenerator.minDist = minDist;
+        PoissonDiskGenerator.k = k;
+        PoissonDiskGenerator.sampleRange = chunkSize - 1;
+        List<Vector2> results = PoissonDiskGenerator.Generate();
+        int width = (int)Mathf.Sqrt(heightMap.Length);
+        foreach (Vector2 point in results)
+        {
+            int index = (int)(Mathf.Floor(point.x)+ Mathf.Floor(point.y) * width);
+            Vector3 worldPos = terrainObject.transform.TransformPoint(mesh.vertices[index]);
+            GameObject clone = Instantiate(grass, worldPos, Quaternion.identity) as GameObject;
+            clone.transform.rotation =  Quaternion.Euler(0, Random.Range(0.0f, 360.0f), 0);
+
+        }
+    }
+    public void scatterObject(float abundance, GameObject objectToScatter, Vector2 allowableScale, bool allowAllRotation = false, int maxObjects = 1500) {
 		//TODO: change how y scales so bushes go out and not up as much
 		//Matrix4x4 localToWorld = transform.localToWorldMatrix;
 		//Instantiate(objectToScatter, vertices[13], Quaternion.identity);
-		int max = 1500;
-		int treeCount = 0;
+		int objectCount = 0;
 		if(mesh != null)  {
 			Vector3[] normals = mesh.normals;
 			for(int i =0; i < vertices.Length; i++) {
-				if(treeCount >= max) 
+				if(objectCount >= maxObjects) 
 					break;
 				if(abundance >= Random.Range(0.0f, 1.0f)) {
 					float slope = 1 - normals[i].y;
-					if(slope < 0.7 && vertices[i].y > 0.3f*(float)heightMultiplier) {
+					if(slope < 0.7 && vertices[i].y > 0.3f*(float)heightMultiplier && roadMask.GetPixels()[i] != new Color(0,0,0)) {
 						Vector3 worldPos = terrainObject.transform.TransformPoint(mesh.vertices[i]);
 						GameObject clone = Instantiate(objectToScatter, worldPos, Quaternion.identity) as GameObject;
 						//Debug.Log("Planting a tree at: " + worldPos + " slope is: " + slope);
 				    	float scale = Random.Range(allowableScale.x, allowableScale.y);
     					clone.transform.localScale = Vector3.one*scale;
     					clone.transform.position = worldPos;
-    					clone.transform.rotation = Quaternion.Euler(0, Random.Range(0.0f, 360.0f), 0);
-    					treeCount++;
+    					clone.transform.rotation = allowAllRotation ? Quaternion.Euler(Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f)) : Quaternion.Euler(0, Random.Range(0.0f, 360.0f), 0);
+                        objectCount++;
 					}
 				}
 
@@ -131,55 +153,7 @@ public class TerrainGenerator : MonoBehaviour
 		}
 
 	}
-    public void generateRoad()
-    {
-        int width = (int)Mathf.Sqrt(heightMap.Length);
-        Vector2 pointA = new Vector2(Random.Range(0, width), Random.Range(0, width));
-        Vector2 pointB;
-        do
-        {
-            pointB = new Vector2(Random.Range(0, width), Random.Range(0, width));
-        } while (AStarPath.manhattanDistanceHeuristic(pointA, pointB) < 230);
-
-        Debug.Log("Start: " + pointA + "   End: " + pointB);
-        List<Vector2> path = AStarPath.findPath(pointA, pointB, width);
-        List<Vector4> roadPoints = new List<Vector4>();
-        Texture2D roadMask = new Texture2D(width, width);
-        Color[] colors = new Color[width * width];
-        for (int x = 0; x < width * width; x++)
-            colors[x] = new Color(255, 255, 255);
-        foreach (Vector2 point in path)
-        {
-            int roadMapIndex = (int)(point.y * width + point.x);
-            colors[roadMapIndex] = new Color(0, 0, 0);
-            List<int> neighbors = AStarPath.getGridNeighbors(roadMapIndex, width);
-            foreach(int index in neighbors)
-            {
-                colors[index] = new Color(0, 0, 0);
-            }
-            Vector3 worldPos = terrainObject.transform.TransformPoint(mesh.vertices[roadMapIndex]);
-            roadPoints.Add(worldPos);
-        }
-        roadMask.SetPixels(colors);
-        roadMask.Apply();
-        terrainObject.GetComponent<MeshRenderer>().material.SetFloat("_RoadLocationCount", roadPoints.Count);
-        terrainObject.GetComponent<MeshRenderer>().material.SetVectorArray("_RoadPositions", roadPoints);
-        terrainObject.GetComponent<MeshRenderer>().material.SetTexture("_RoadMask", roadMask);
-        var returned = terrainObject.GetComponent<MeshRenderer>().material.GetVectorArray("_RoadPositions");
-        var count = terrainObject.GetComponent<MeshRenderer>().material.GetFloat("_RoadLocationCount");
-        /*GameObject roadObject = new GameObject();
-        roadObject.AddComponent<MeshRenderer>();
-        roadObject.AddComponent<MeshFilter>();
-        roadObject.AddComponent<MeshCollider>();
-        Mesh roadMesh = extrudeAlongPath(roadPoints, path, 2.0f);
-        roadObject.GetComponent<MeshFilter>().mesh = roadMesh;
-        roadObject.transform.SetParent(terrainObject.transform);
-        roadObject.name = "Road from: " + pointA;
-        roadObject.transform.position += Vector3.up * 0.0f; //slightly raise over terrain
-        roadObject.GetComponent<MeshRenderer>().material = Resources.Load("roadMaterial") as Material;
-        roadObject.GetComponent<MeshCollider>().sharedMesh = roadMesh;
-        roadObject.GetComponent<MeshCollider>().enabled = true;*/
-    }
+   
     public GameObject generateMesh()
     {
         GameObject toReturn = new GameObject();
@@ -196,6 +170,7 @@ public class TerrainGenerator : MonoBehaviour
         MeshRenderer rend = toReturn.GetComponent<MeshRenderer>();
 
         rend.material.shader = Shader.Find("Custom/TerrainShader");
+        rend.material = Resources.Load("TerrainMaterial") as Material;
         rend.material.SetFloat("_SandHeight", sandLevel); //0.3 for sand and .24 for water makes pools
         rend.material.SetFloat("_WaterHeight", waterLevel);
         rend.material.SetFloat("_SnowHeight", snowLevel);
@@ -219,13 +194,14 @@ public class TerrainGenerator : MonoBehaviour
         rend.material.SetTextureScale("_RoadTex", new Vector2(100, 100));
 
         rend.material.SetTexture("_RoadBumpmap", Resources.Load("cobblestone_N") as Texture);
+        rend.material.SetTexture("_RoadMask", roadMask);
 
         mesh.name = "Terrain Mesh";
         mesh.vertices = vertices;
         mesh.triangles = triangles;
         mesh.uv = uvs;
         mesh.RecalculateNormals();
-        mesh.RecalculateTangents();
+        //mesh.RecalculateTangents();
         toReturn.GetComponent<MeshCollider>().sharedMesh = mesh;
         toReturn.GetComponent<MeshCollider>().enabled = true;
         toReturn.name = "Terrain Tile";

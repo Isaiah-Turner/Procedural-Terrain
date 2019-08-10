@@ -24,7 +24,7 @@ public static class AStarPath
 			this.steps = steps;
 		}
 	}
-	public static List<Vector2> findPath(Vector2 start, Vector2 goal, int gridWidth) { //will need heightMap to find slopes
+	public static List<Vector2> findPath(Vector2 start, Vector2 goal, int gridWidth, float[] heightMap, int heightMultiplier) { //will need heightMap to find slopes
 		Location startLocation = new Location(start);
 		Location goalLocation = new Location(goal);
 		List<Location> frontier = new List<Location>();
@@ -34,8 +34,19 @@ public static class AStarPath
 		Location current = startLocation;
 		int step = 0;
 		while(frontier.Count > 0) {
-			var lowest = frontier.Min(l => l.fPrime);
-			current = frontier.First(l => l.fPrime == lowest);
+            // var lowest = frontier.Min(l => l.fPrime);
+            //current = frontier.First(l => l.fPrime == lowest);
+            Location bestLocation = null;
+            float minScore = float.MaxValue;
+            foreach(Location l in frontier)
+            {
+                if (l.fPrime < minScore)
+                {
+                    bestLocation = l;
+                    minScore = l.fPrime;
+                }
+            }
+            current = bestLocation;
 			interior.Add(current);
 			frontier.Remove(current);
 			if(interior.FirstOrDefault(l => goalLocation.x == l.x && goalLocation.y == l.y) != null) {
@@ -43,23 +54,33 @@ public static class AStarPath
 			}
 			List<int> neighbors = getGridNeighbors(current.x+current.y*gridWidth, gridWidth);
 			//Debug.Log("finding neighbors");
-			step++;
+			step = current.steps + 1;
 			foreach(int neighborIndex in neighbors) {
 				Location neighborLocation = new Location(intToVector(neighborIndex, gridWidth));
 				if(interior.FirstOrDefault(l => neighborLocation.x == l.x && neighborLocation.y == l.y) != null) { //if neighbor is already in interior, ignore
 					continue;
 				}
+                /*if(heightMap[neighborIndex] < 0.3f * (float)heightMultiplier) //water tile
+                {
+                    continue;
+                }*/
 				if(frontier.FirstOrDefault(l => neighborLocation.x == l.x && neighborLocation.y == l.y) == null) { //if neighbor is not in frontier, keep going				continue;
 					neighborLocation.steps = step;
-					neighborLocation.fPrime = manhattanDistanceHeuristic(neighborLocation, goalLocation) + neighborLocation.steps;
-					neighborLocation.parent = current;
+                    // neighborLocation.fPrime = slopeDistanceHeuristic(neighborLocation, goalLocation, heightMap, heightMultiplier) + manhattanDistanceHeuristic(neighborLocation, goalLocation) + neighborLocation.steps * 10;
+                    //neighborLocation.fPrime = euclideanDistanceHeuristic(neighborLocation, goalLocation) + neighborLocation.steps;
+                    neighborLocation.fPrime = euclidean3DDistanceHeuristic(neighborLocation, goalLocation, heightMap, heightMultiplier)*5 + neighborLocation.steps;
+                    neighborLocation.fPrime *= (heightMap[neighborIndex] < 0.3f * (float)heightMultiplier) ? 1.3f : 1f;
+                    neighborLocation.parent = current;
 					frontier.Insert(0, neighborLocation);
 				}
 				else { //if in frontier already, check to see if this path is better
 					if(step + neighborLocation.fPrime - neighborLocation.steps < neighborLocation.fPrime) {
 						neighborLocation.steps = step;
-						neighborLocation.fPrime = manhattanDistanceHeuristic(neighborLocation, goalLocation) + neighborLocation.steps;
-						neighborLocation.parent = current;
+                        //neighborLocation.fPrime = slopeDistanceHeuristic(neighborLocation, goalLocation, heightMap) + manhattanDistanceHeuristic(neighborLocation, goalLocation) + neighborLocation.steps * 10;
+                        //neighborLocation.fPrime = euclideanDistanceHeuristic(neighborLocation, goalLocation) + neighborLocation.steps;
+                        neighborLocation.fPrime = euclidean3DDistanceHeuristic(neighborLocation, goalLocation, heightMap, heightMultiplier)*5 + neighborLocation.steps;
+                        neighborLocation.fPrime *= (heightMap[neighborIndex] < 0.3f * (float)heightMultiplier) ? 1.3f : 1f;
+                        neighborLocation.parent = current;
 					}
 				}
 			}
@@ -103,8 +124,27 @@ public static class AStarPath
         }
         return neighbors;
     }
+    public static float slopeDistanceHeuristic(Location a, Location b, float[] heightMap, int heightMultiplier)
+    {
+        int width = (int)Mathf.Sqrt(heightMap.Length);
+        float distance = euclideanDistanceHeuristic(a, b);
+        float heightDifference = heightMap[b.x + b.y*width] - heightMap[a.x + a.y * width];
+        heightMultiplier *= heightMultiplier;
+        float slope = heightDifference / distance;
+        return distance * (1 + slope*slope);
+    }
+    public static float euclidean3DDistanceHeuristic(Location a, Location b, float[] heightMap, int heightMultipler)
+    {
+        int width = (int)Mathf.Sqrt(heightMap.Length);
+        float heightDiff = heightMultipler * (heightMap[b.x + b.y * width] - heightMap[a.x + a.y * width]);
+        return new Vector3(b.x - a.x, b.y - a.y, heightDiff*heightDiff).magnitude;
+    }
+    public static float euclideanDistanceHeuristic(Location a, Location b)
+    {
+        return new Vector2(b.x - a.x, b.y - a.y).magnitude;
+    }
 
-	public static float manhattanDistanceHeuristic(Location a, Location b) {
+    public static float manhattanDistanceHeuristic(Location a, Location b) {
 		return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y);
 	}
     public static float manhattanDistanceHeuristic(Vector2 a, Vector2 b)

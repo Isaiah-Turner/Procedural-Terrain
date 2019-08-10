@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class TileTerrain : MonoBehaviour
 {
-    public int tileDepth, tileWidth;
-    private int chunkSize;
-    private float[] fullHeightMap;
-    private float[] fullRoadMap;
+    [Header("Terrain Dimensions")]
+    public int tileDepth;
+    public int tileWidth;
+    [Header("Terrain Features")]
+    public int roadCount = 1;
     public int erosionIterations = 0;
+    public int heightMultiplier = 100;
+
+    [Header("Terrain Objects")]
     public GameObject tree;
     public GameObject tree2;
     public GameObject shrub;
@@ -17,8 +21,10 @@ public class TileTerrain : MonoBehaviour
     public GameObject rock;
     public GameObject rock2;
     public GameObject rock3;
-    public const int heightMultiplier = 100;
-    public int maxRoads = 10;
+    public GameObject grass;
+
+    private int chunkSize;
+    private float[] fullHeightMap;
     //private List<RoadInfo> roads =  new List<RoadInfo>();
     // Start is called before the first frame update
     void Start()
@@ -26,12 +32,9 @@ public class TileTerrain : MonoBehaviour
         chunkSize = TerrainGenerator.chunkSize;
         Vector2 initialPos = new Vector2((int)Mathf.Floor(-tileWidth / 2) * chunkSize, (int)Mathf.Floor(-tileDepth / 2) * chunkSize);
         int totalSize = chunkSize * Mathf.Max(tileDepth, tileWidth);
-        fullHeightMap = FindObjectOfType<NoiseCreator>().GenerateHeightMap(totalSize, false, initialPos);
-        fullRoadMap = new float[totalSize * totalSize];
-        /*for (int roadCount = 0; roadCount < maxRoads; roadCount++)
-        {
-            roads.Add(generateRoad());
-        }*/
+        //fullHeightMap = FindObjectOfType<NoiseCreator>().GenerateHeightMap(totalSize, false, initialPos);
+        fullHeightMap = FindObjectOfType<NoiseCreator>().GenerateHeightMap(totalSize, false, new Vector2(Random.Range(-1000, 1000), Random.Range(-1000, 1000)));
+        Color[] roadMask = generateRoadMask(roadCount, totalSize - 50);
         for (int dropAmount = 0; dropAmount < erosionIterations; dropAmount++)
         {
             fullHeightMap = FindObjectOfType<Eroder>().erode(fullHeightMap, totalSize);
@@ -43,16 +46,12 @@ public class TileTerrain : MonoBehaviour
             int currentX = 0;
             for (int tileX = (int)Mathf.Floor(-tileWidth / 2.0f); tileX < Mathf.RoundToInt((float)tileWidth / 2.0f); tileX++)
             {
-                Debug.Log(tileX + " " + tileY);
                 Vector2 tilePos = new Vector2(tileX * (chunkSize - 1), tileY * (chunkSize - 1));
-                Debug.Log(tilePos);
                 TerrainGenerator generator = new TerrainGenerator();
                 TerrainGenerator.heightMultiplier = heightMultiplier;
                 //generator.BuildErodedHeightMap(tilePos, 0);
-                Debug.Log(chunkSize * currentX + " " + chunkSize * currentY);
-                generator.setHeightMapFromReference(fullHeightMap, fullRoadMap, chunkSize * currentX, chunkSize * currentY);
+                generator.setHeightMapFromReference(fullHeightMap, roadMask, chunkSize * currentX, chunkSize * currentY);
                 GameObject terrain = generator.generateTerrain();
-                generator.generateRoad();
                 terrain.transform.SetParent(this.transform);
                 /*foreach(RoadInfo road in roads)
                 {
@@ -69,16 +68,22 @@ public class TileTerrain : MonoBehaviour
                 }*/
                 terrain.transform.position = new Vector3(tilePos.x, 0, tilePos.y) * 2;
                 Vector2 treeScale = new Vector2(1.0f, 5.0f) * 0.3048f;
-                Vector2 shrubScale = new Vector2(0.2f, .35f);
-                /*generator.scatterObject(0.01f, tree, treeScale);
-				generator.scatterObject(0.01f, tree2, treeScale);
-				generator.scatterObject(0.01f, shrub, shrubScale);
-				generator.scatterObject(0.01f, shrub2, shrubScale);
-				generator.scatterObject(0.01f, shrub3, shrubScale);
+                Vector2 smallScale = new Vector2(0.2f, .35f);
+                Vector2 rockScale = new Vector2(0.02f, 0.04f);
 
-				/*generator.scatterObject(0.01f, rock);
-				generator.scatterObject(0.01f, rock2);
-				generator.scatterObject(0.01f, rock3);*/
+                generator.scatterGrass(grass, 1.0f, 30);
+                /*
+                generator.scatterObject(0.01f, tree, treeScale);
+				generator.scatterObject(0.01f, tree2, treeScale);
+				generator.scatterObject(0.01f, shrub, smallScale);
+				generator.scatterObject(0.01f, shrub2, smallScale);
+				generator.scatterObject(0.01f, shrub3, smallScale);
+                //generator.scatterObject(0.5f, grass, new Vector2(0.5f, 1.0f), false, 25000);
+
+                generator.scatterObject(0.01f, rock, rockScale, true);
+				generator.scatterObject(0.01f, rock2, rockScale, true);
+				generator.scatterObject(0.01f, rock3, rockScale, true);*/
+                
                 currentX += 1;
                 Debug.Log("TILE FINISHED");
                 //break;
@@ -91,13 +96,48 @@ public class TileTerrain : MonoBehaviour
 
 
     }
-    // Update is called once per frame
-    void Update()
+    public Color[] generateRoadMask(int roadCount, int minRoadLength)
     {
+        int width = (int)Mathf.Sqrt(fullHeightMap.Length);
+        Color[] colors = new Color[fullHeightMap.Length];
+        for (int x = 0; x < width * width; x++)
+            colors[x] = new Color(255, 255, 255);
+        for (int i = 0; i < roadCount; i++)
+        {
+            Vector2 pointA = new Vector2(Random.Range(0, width), Random.Range(0, width));
+            Vector2 pointB;
+            do
+            {
+                pointB = new Vector2(Random.Range(0, width), Random.Range(0, width));
+            } while (AStarPath.manhattanDistanceHeuristic(pointA, pointB) < minRoadLength);
 
-        /*var clone = Instantiate(tree, new Vector3(Random.Range(-100, 100), 100, Random.Range(-100, 100)), Quaternion.identity);
-    	float scale = Random.Range(1, 5);
-    	clone.transform.localScale = Vector3.one*scale;*/
+            Debug.Log("Start: " + pointA + "   End: " + pointB);
+
+            List<Vector2> path = AStarPath.findPath(pointA, pointB, width, fullHeightMap, heightMultiplier);
+            foreach (Vector2 point in path)
+            {
+                int roadMapIndex = (int)(point.y * width + point.x);
+                colors[roadMapIndex] = new Color(0, 0, 0);
+                List<int> neighbors = AStarPath.getGridNeighbors(roadMapIndex, width);
+                foreach (int index in neighbors)
+                {
+                    colors[index] = new Color(0, 0, 0);
+                }
+            }
+        }
+        return colors;
+        /*GameObject roadObject = new GameObject();
+        roadObject.AddComponent<MeshRenderer>();
+        roadObject.AddComponent<MeshFilter>();
+        roadObject.AddComponent<MeshCollider>();
+        Mesh roadMesh = extrudeAlongPath(roadPoints, path, 2.0f);
+        roadObject.GetComponent<MeshFilter>().mesh = roadMesh;
+        roadObject.transform.SetParent(terrainObject.transform);
+        roadObject.name = "Road from: " + pointA;
+        roadObject.transform.position += Vector3.up * 0.0f; //slightly raise over terrain
+        roadObject.GetComponent<MeshRenderer>().material = Resources.Load("roadMaterial") as Material;
+        roadObject.GetComponent<MeshCollider>().sharedMesh = roadMesh;
+        roadObject.GetComponent<MeshCollider>().enabled = true;*/
     }
-    
+
 }

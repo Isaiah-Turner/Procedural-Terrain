@@ -63,10 +63,17 @@
     <Compile Include="Assets\Scripts\AStarPath.cs" />
     <Compile Include="Assets\Scripts\Eroder.cs" />
     <Compile Include="Assets\Scripts\NoiseCreator.cs" />
+    <Compile Include="Assets\Scripts\PoissonDisk.cs" />
     <Compile Include="Assets\Scripts\TerrainGenerator.cs" />
     <Compile Include="Assets\Scripts\TileTerrain.cs" />
     <Compile Include="Assets\Scripts\WaterController.cs" />
+    <Compile Include="Assets\SurrealGrassShader\Scripts\CameraCullDistance.cs" />
+    <Compile Include="Assets\SurrealGrassShader\SurrealGrassCreator.cs" />
+    <None Include="Assets\Grass_Assets\Foliage Flat_Alpha.shader" />
     <None Include="Assets\Scripts\TerrainShader.shader" />
+    <None Include="Assets\SurrealGrassShader\PoliigonLicense.txt" />
+    <None Include="Assets\Grass_Assets\Foliage Flat.shader" />
+    <None Include="Assets\SurrealGrassShader\Shaders\SurrealGrassShader.shader" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>C:/Users/isaia/Procedural Generation/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
