@@ -189,7 +189,7 @@ public class SurrealGrassCreator : EditorWindow {
                     for (int z = 0; z < cellDivisions; z++)
                     {
                         destZPosition = destZorigin + (z * size);
-
+                        GameObject lod = new GameObject(targetObject.name + "_SGRendererLOD_" + x.ToString() + "_" + z.ToString());
                         GameObject empty = new GameObject(targetObject.name + "_SGRenderer_" + x.ToString() + "_" + z.ToString());
                         MeshFilter filter = empty.AddComponent<MeshFilter>();
                         MeshRenderer renderer = empty.AddComponent<MeshRenderer>();
@@ -247,7 +247,16 @@ public class SurrealGrassCreator : EditorWindow {
 
                             parentEmpty.layer = layerMask.value;
                             empty.layer = layerMask.value;
-                            empty.transform.SetParent(parentEmpty.transform, true);
+                            lod.transform.SetParent(parentEmpty.transform, true);
+                            empty.transform.SetParent(lod.transform, true);
+                            lod.AddComponent<LODGroup>();
+                            LODGroup lodGroup = lod.GetComponent<LODGroup>();
+                            LOD[] lods = new LOD[1];
+                            Renderer[] rendArray = new Renderer[1];
+                            rendArray[0] = empty.GetComponent<Renderer>();
+                            lods[0] = new LOD(0.14f, rendArray);
+                            //lods[1] = new LOD(0.27f, new Renderer[0]);
+                            lodGroup.SetLODs(lods);
                         }
                         else
                         {

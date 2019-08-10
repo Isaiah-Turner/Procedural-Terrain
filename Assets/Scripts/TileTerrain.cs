@@ -71,12 +71,12 @@ public class TileTerrain : MonoBehaviour
                 Vector2 smallScale = new Vector2(0.2f, .35f);
                 Vector2 rockScale = new Vector2(0.02f, 0.04f);
 
-                generator.scatterGrass(grass, 1.0f, 30);
-                /*
+                //generator.scatterGrass(grass, 1.0f, 30);
+                
                 generator.scatterObject(0.01f, tree, treeScale);
 				generator.scatterObject(0.01f, tree2, treeScale);
 				generator.scatterObject(0.01f, shrub, smallScale);
-				generator.scatterObject(0.01f, shrub2, smallScale);
+				/*generator.scatterObject(0.01f, shrub2, smallScale);
 				generator.scatterObject(0.01f, shrub3, smallScale);
                 //generator.scatterObject(0.5f, grass, new Vector2(0.5f, 1.0f), false, 25000);
 
