@@ -11,7 +11,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{033565D8-C5B6-C4C3-059E-F58DAED5C844}</ProjectGuid>
+    <ProjectGuid>{92D2E764-231F-3B96-7594-F2DDF4AFCA09}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -24,7 +24,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>Temp\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;UNITY_2019_2_0;UNITY_2019_2;UNITY_2019;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2018_1_OR_NEWER;UNITY_2018_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2019_1_OR_NEWER;UNITY_2019_2_OR_NEWER;PLATFORM_ARCH_64;UNITY_64;UNITY_INCLUDE_TESTS;UNITY_ANALYTICS;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_TEXTURE_STREAMING;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_MANAGED_JOBS;ENABLE_MANAGED_TRANSFORM_JOBS;ENABLE_MANAGED_ANIMATION_JOBS;ENABLE_MANAGED_AUDIO_JOBS;INCLUDE_DYNAMIC_GI;ENABLE_MONO_BDWGC;ENABLE_SCRIPTING_GC_WBARRIERS;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_VIDEO;PLATFORM_STANDALONE_WIN;PLATFORM_STANDALONE;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_OUT_OF_PROCESS_CRASH_HANDLER;ENABLE_EVENT_QUEUE;ENABLE_CLUSTER_SYNC;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_AR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_STANDARD_2_0;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_UNITY_COLLECTIONS_CHECKS;ENABLE_BURST_AOT;UNITY_TEAM_LICENSE;ENABLE_VSTU;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_DIRECTOR;ENABLE_LOCALIZATION;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_TILEMAP;ENABLE_TIMELINE;CROSS_PLATFORM_INPUT;UNITY_POST_PROCESSING_STACK_V2;CSHARP_7_OR_LATER;CSHARP_7_3_OR_NEWER</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;UNITY_2019_2_0;UNITY_2019_2;UNITY_2019;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2018_1_OR_NEWER;UNITY_2018_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2019_1_OR_NEWER;UNITY_2019_2_OR_NEWER;PLATFORM_ARCH_64;UNITY_64;UNITY_INCLUDE_TESTS;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_TEXTURE_STREAMING;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_MANAGED_JOBS;ENABLE_MANAGED_TRANSFORM_JOBS;ENABLE_MANAGED_ANIMATION_JOBS;ENABLE_MANAGED_AUDIO_JOBS;INCLUDE_DYNAMIC_GI;ENABLE_MONO_BDWGC;ENABLE_SCRIPTING_GC_WBARRIERS;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_VIDEO;PLATFORM_STANDALONE_WIN;PLATFORM_STANDALONE;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_OUT_OF_PROCESS_CRASH_HANDLER;ENABLE_EVENT_QUEUE;ENABLE_CLUSTER_SYNC;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_AR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_STANDARD_2_0;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_UNITY_COLLECTIONS_CHECKS;ENABLE_BURST_AOT;UNITY_TEAM_LICENSE;ENABLE_VSTU;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_DIRECTOR;ENABLE_LOCALIZATION;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_TILEMAP;ENABLE_TIMELINE;CROSS_PLATFORM_INPUT;UNITY_POST_PROCESSING_STACK_V2;CSHARP_7_OR_LATER;CSHARP_7_3_OR_NEWER</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169;CS0649;IDE0051</NoWarn>
@@ -71,67 +71,102 @@
     <Compile Include="Assets\Scripts\WaterController.cs" />
     <Compile Include="Assets\SurrealGrassShader\Scripts\CameraCullDistance.cs" />
     <Compile Include="Assets\SurrealGrassShader\SurrealGrassCreator.cs" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\FinalPass.shader" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Debug\Waveform.compute" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\Uber.shader" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\Texture3DLerp.compute" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\CopyStd.shader" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\Bloom.shader" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\CopyStdFromDoubleWide.shader" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\xRLib.hlsl" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\API\Switch.hlsl" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\MultiScaleVOUpsample.compute" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\API\PSSL.hlsl" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Debug\Vectorscope.shader" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\GaussianDownsample.compute" />
     <None Include="Assets\Grass_Assets\Foliage Flat_Alpha.shader" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\ScreenSpaceReflections.hlsl" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\DepthOfField.shader" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\DiscardAlpha.shader" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\Lut3DBaker.compute" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\Dithering.hlsl" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Colors.hlsl" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\API\Vulkan.hlsl" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\GrainBaker.shader" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\ExposureHistogram.hlsl" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Debug\LightMeter.shader" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\API\D3D12.hlsl" />
     <None Include="Assets\Scripts\TerrainShader.shader" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\API\OpenGL.hlsl" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\DiskKernels.hlsl" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\MultiScaleVODownsample2.compute" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\ScalableAO.hlsl" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\ACES.hlsl" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\MultiScaleVODownsample1.compute" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\StdLib.hlsl" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\MultiScaleVO.shader" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\DepthOfField.hlsl" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\FastApproximateAntialiasing.hlsl" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\Fog.hlsl" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\MultiScaleVORender.compute" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\ScalableAO.shader" />
     <None Include="Assets\SurrealGrassShader\PoliigonLicense.txt" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\SubpixelMorphologicalAntialiasing.hlsl" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\MotionBlur.shader" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\SubpixelMorphologicalAntialiasing.shader" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\Texture2DLerp.shader" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\DeferredFog.shader" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\CopyStdFromTexArray.shader" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\API\D3D9.hlsl" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\Lut2DBaker.shader" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\AutoExposure.compute" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Debug\Overlays.shader" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\API\Metal.hlsl" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\Distortion.hlsl" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Debug\Vectorscope.compute" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\TemporalAntialiasing.shader" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\SubpixelMorphologicalAntialiasingBridge.hlsl" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\ScreenSpaceReflections.shader" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\Copy.shader" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\API\D3D11.hlsl" />
     <None Include="Assets\Grass_Assets\Foliage Flat.shader" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Debug\Waveform.shader" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\API\XboxOne.hlsl" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Sampling.hlsl" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\API\PSP2.hlsl" />
     <None Include="Assets\SurrealGrassShader\Shaders\SurrealGrassShader.shader" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Debug\Histogram.compute" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Debug\Histogram.shader" />
+    <None Include="Assets\PostProcessing-2\PostProcessing\Shaders\Builtins\ExposureHistogram.compute" />
     <Reference Include="Unity.Timeline.Editor">
-      <HintPath>C:/Users/isaia/Procedural Generation/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="com.unity.multiplayer-hlapi.Editor">
-      <HintPath>C:/Users/isaia/Procedural Generation/Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Editor.dll</HintPath>
+      <HintPath>C:/Users/Isaiah/Procedural-Terrain/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
-      <HintPath>C:/Users/isaia/Procedural Generation/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
+      <HintPath>C:/Users/Isaiah/Procedural-Terrain/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro.Editor">
+      <HintPath>C:/Users/Isaiah/Procedural-Terrain/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>C:/Users/isaia/Procedural Generation/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>C:/Users/isaia/Procedural Generation/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+      <HintPath>C:/Users/Isaiah/Procedural-Terrain/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline">
-      <HintPath>C:/Users/isaia/Procedural Generation/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+      <HintPath>C:/Users/Isaiah/Procedural-Terrain/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="Unity.CollabProxy.Editor">
-      <HintPath>C:/Users/isaia/Procedural Generation/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="com.unity.multiplayer-weaver.Editor">
-      <HintPath>C:/Users/isaia/Procedural Generation/Library/ScriptAssemblies/com.unity.multiplayer-weaver.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.XR.LegacyInputHelpers">
-      <HintPath>C:/Users/isaia/Procedural Generation/Library/ScriptAssemblies/UnityEngine.XR.LegacyInputHelpers.dll</HintPath>
+      <HintPath>C:/Users/Isaiah/Procedural-Terrain/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Rider.Editor">
-      <HintPath>C:/Users/isaia/Procedural Generation/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.2D.Sprite.Editor">
-      <HintPath>C:/Users/isaia/Procedural Generation/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.2D.Tilemap.Editor">
-      <HintPath>C:/Users/isaia/Procedural Generation/Library/ScriptAssemblies/Unity.2D.Tilemap.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.SpatialTracking">
-      <HintPath>C:/Users/isaia/Procedural Generation/Library/ScriptAssemblies/UnityEditor.SpatialTracking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.SpatialTracking">
-      <HintPath>C:/Users/isaia/Procedural Generation/Library/ScriptAssemblies/UnityEngine.SpatialTracking.dll</HintPath>
+      <HintPath>C:/Users/Isaiah/Procedural-Terrain/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>C:/Users/isaia/Procedural Generation/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Analytics.DataPrivacy">
-      <HintPath>C:/Users/isaia/Procedural Generation/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.XR.LegacyInputHelpers">
-      <HintPath>C:/Users/isaia/Procedural Generation/Library/ScriptAssemblies/UnityEditor.XR.LegacyInputHelpers.dll</HintPath>
+      <HintPath>C:/Users/Isaiah/Procedural-Terrain/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
-      <HintPath>C:/Users/isaia/Procedural Generation/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="com.unity.multiplayer-hlapi.Runtime">
-      <HintPath>C:/Users/isaia/Procedural Generation/Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Runtime.dll</HintPath>
+      <HintPath>C:/Users/Isaiah/Procedural-Terrain/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.2.0f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -309,15 +344,6 @@
     </Reference>
     <Reference Include="UnityEngine.XRModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.2.0f1/Editor/Data/Managed/UnityEngine/UnityEngine.XRModule.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Analytics.Editor">
-      <HintPath>C:/Users/isaia/Procedural Generation/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Analytics.StandardEvents">
-      <HintPath>C:/Users/isaia/Procedural Generation/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.StandardEvents.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Analytics.Tracker">
-      <HintPath>C:/Users/isaia/Procedural Generation/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.Tracker.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.2.0f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
@@ -676,8 +702,16 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{D458FE4A-8EB5-7377-282A-19C04ED38D16}</Project>
+      <Project>{88C30E91-ABA3-F3ED-BD94-4C087EDBCC92}</Project>
       <Name>Assembly-CSharp-firstpass</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Postprocessing.Editor.csproj">
+      <Project>{9CABC1E8-458F-C9EE-6893-94E6D4642E99}</Project>
+      <Name>Unity.Postprocessing.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Postprocessing.Runtime.csproj">
+      <Project>{9ABA90AA-98F5-7D2D-22BC-4193E57096C3}</Project>
+      <Name>Unity.Postprocessing.Runtime</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

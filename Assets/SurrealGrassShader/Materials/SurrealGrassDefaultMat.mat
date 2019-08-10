@@ -4,8 +4,9 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: SurrealGrassDefaultMat
   m_Shader: {fileID: 4800000, guid: a559d5bf1195b0246b54979d262ff848, type: 3}
   m_ShaderKeywords: 
@@ -114,7 +115,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.168
     - _GlossyReflections: 1
-    - _GrassHeight: 0.2
+    - _GrassHeight: 0.4
     - _GrassWeight: -0.6
     - _GrassWidth: 0.02
     - _Invert1: 0
