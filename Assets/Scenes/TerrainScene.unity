@@ -972,11 +972,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d96e01b50d487f49bf6a6894ff5eaa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileDepth: 2
-  tileWidth: 2
-  roadCount: 1
-  erosionIterations: 0
+  tileDepth: 1
+  tileWidth: 1
+  roadCount: 0
+  erosionIterations: 10000
   heightMultiplier: 100
+  createIsland: 0
+  generateTerrainObjects: 0
   tree: {fileID: 100016, guid: 469edab27ab6d004d84af2c4a851bd7f, type: 3}
   tree2: {fileID: 100000, guid: c91c1eb85782d5748ace27eb4d7415bb, type: 3}
   shrub: {fileID: 3321378083354509349, guid: d93e3c134c320b041a9b4cc013b81fdc, type: 3}

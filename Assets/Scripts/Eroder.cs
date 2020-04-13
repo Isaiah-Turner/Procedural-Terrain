@@ -58,8 +58,6 @@ public class Eroder : MonoBehaviour
 		//Create water drop at random point 
 		float xCoord = Random.Range(0.0f, (float)(size-1));
 		float yCoord = Random.Range(0.0f, (float)(size-1));
-		//xCoord = yCoord = 5.5f;
-		//yCoord = 254.0533f;
 		Droplet current = new Droplet(xCoord, yCoord, initialSpeed, waterCapacity);
 		//Debug.Log(current.ToString());
 		for(int time = 0; time < maxPathLength; time++) {
@@ -256,11 +254,8 @@ public class Eroder : MonoBehaviour
 	}
 
     void normalize(float[] toNorm, float min, float max) {
-        //Debug.Log(max);
-        //Debug.Log(min);
         for(int i =0; i < heightMap.Length; i++) {
             heightMap[i] = (heightMap[i] - min) / (max - min);
-            //Debug.Log(heightMap[i]);
         }
     }
 }
